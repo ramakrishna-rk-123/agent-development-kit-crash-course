@@ -1,15 +1,14 @@
 import os
 import random
-
 from google.adk.agents import Agent
 from google.adk.models.lite_llm import LiteLlm
 
 # https://docs.litellm.ai/docs/providers/openrouter
+# model="openrouter/openai/gpt-4.1",
 model = LiteLlm(
-    model="openrouter/openai/gpt-4.1",
-    api_key=os.getenv("OPENROUTER_API_KEY"),
+    model="anthropic/claude-3-5-sonnet",  # ✅ Using Anthropic Claude model
+    api_key=os.getenv("ANTHROPIC_API_KEY"),  # ✅ Using Anthropic API key
 )
-
 
 def get_dad_joke():
     jokes = [
@@ -20,14 +19,14 @@ def get_dad_joke():
     ]
     return random.choice(jokes)
 
-
+# Create the agent
 root_agent = Agent(
     name="dad_joke_agent",
     model=model,
     description="Dad joke agent",
     instruction="""
-    You are a helpful assistant that can tell dad jokes. 
-    Only use the tool `get_dad_joke` to tell jokes.
+        You are a helpful assistant that can tell dad jokes.
+        Only use the tool `get_dad_joke` to tell jokes.
     """,
     tools=[get_dad_joke],
 )
